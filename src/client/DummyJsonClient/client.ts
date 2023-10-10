@@ -5,6 +5,7 @@ import {
   fromThrowable,
   ok,
   okAsync,
+  errAsync,
 } from "neverthrow";
 import ClientError from "./errors/DummyJsonClientError";
 import AuthError from "../../error/AuthError";
@@ -21,6 +22,8 @@ import {
   isClientProducts,
   isClientUser,
 } from "./guards";
+import NotFoundError from "../../error/NotFoundError";
+import ServerError from "../../error/ServerError";
 
 class DummyJsonClient {
   constructor(protected baseUrl: string) {}
@@ -64,7 +67,7 @@ class DummyJsonClient {
       });
   }
 
-  product(id: string): ResultAsync<ClientProduct, ClientError> {
+  product(id: string): ResultAsync<ClientProduct, ClientError | NotFoundError> {
     return okAsync({})
       .andThen(() => {
         return fromPromise(
@@ -74,6 +77,12 @@ class DummyJsonClient {
         );
       })
       .andThen((response) => {
+        if (response.status === 404) {
+          return errAsync(new NotFoundError("Product not found."));
+        } else if (response.status !== 200) {
+          return errAsync(new ClientError("Unexpected client response status."));
+        }
+
         return fromPromise(
           response.json(),
           (e) =>
