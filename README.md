@@ -1,11 +1,12 @@
 ## Deployment
 #### prod
-https://4qsh8ul9ae.execute-api.eu-north-1.amazonaws.com/stage/
+https://rvvpxf9fyg.execute-api.eu-north-1.amazonaws.com/stage
+
 #### dev
-https://hxmtkngdkk.execute-api.eu-north-1.amazonaws.com/stage/
+https://8g9kb0rasb.execute-api.eu-north-1.amazonaws.com/stage
 
 ## Postman Collection
-https://api.postman.com/collections/12230709-dbb77cf0-96e9-441d-8598-43bbad97f907?access_key=PMAT-01HCA1T9CDSRT7MP134TAXHFVD
+https://www.postman.com/yurahuchok/workspace/cart-service/collection/30410900-59e2316f-2d19-40b1-bee7-0fd2e7b2d784
 
 ## Infrastructure
 - AWS API Gateway
