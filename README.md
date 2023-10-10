@@ -1,5 +1,8 @@
 ## Deployment
-https://2z9qra9ms5.execute-api.eu-north-1.amazonaws.com/stage/
+#### prod
+https://4qsh8ul9ae.execute-api.eu-north-1.amazonaws.com/stage/
+#### dev
+https://hxmtkngdkk.execute-api.eu-north-1.amazonaws.com/stage/
 
 ## Postman Collection
 https://api.postman.com/collections/12230709-dbb77cf0-96e9-441d-8598-43bbad97f907?access_key=PMAT-01HCA1T9CDSRT7MP134TAXHFVD
