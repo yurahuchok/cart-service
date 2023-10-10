@@ -8,8 +8,10 @@ class InputService {
   parseBody(event: APIGatewayProxyEvent): Result<any, BadRequestError> {
     return fromThrowable(
       () => {
-        const bodyString = Buffer.from(event.body ?? "", "base64").toString("utf-8");
-        const decoded = JSON.parse(bodyString !== '' ? bodyString : "{}");
+        const bodyString = Buffer.from(event.body ?? "", "base64").toString(
+          "utf-8",
+        );
+        const decoded = JSON.parse(bodyString !== "" ? bodyString : "{}");
         if (!(typeof decoded === "object" && decoded !== null)) {
           throw new Error("Invalid JSON");
         }

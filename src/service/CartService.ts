@@ -1,9 +1,7 @@
 import { combine, err, okAsync } from "neverthrow";
 import type LoginService from "./LoginService";
 import AuthError from "../error/AuthError";
-import CartRepository from "../repository/CartRepository";
-import ProductRepository from "../repository/ProductRepository";
-import RepositoryManager from "../repository/RepositoryManager";
+import type RepositoryManager from "../repository/RepositoryManager";
 
 class CartService {
   constructor(
@@ -20,12 +18,12 @@ class CartService {
   }
 
   protected getProductById(productId: string) {
-    return this.rm.get('product').getProductById(productId);
+    return this.rm.get("product").getProductById(productId);
   }
 
   getCartItems() {
     return this.getUserId().andThen((userId) => {
-      return this.rm.get('cart').getCartItemsByUserId(userId);
+      return this.rm.get("cart").getCartItemsByUserId(userId);
     });
   }
 
@@ -34,7 +32,8 @@ class CartService {
       this.getUserId(),
       this.getProductById(productId),
     ] as const).andThen(([userId]) => {
-      return this.rm.get('cart')
+      return this.rm
+        .get("cart")
         .addOrUpdateCartItemByUserIdAndProductId(userId, productId, {
           Count: quantity,
         });
@@ -43,14 +42,26 @@ class CartService {
 
   removeProductFromCart(productId: string) {
     return this.getUserId().andThen((userId) => {
-      return this.rm.get('cart')
+      return this.rm
+        .get("cart")
         .deleteCartItemByUserIdAndProductId(userId, productId);
     });
   }
 
   clearCart() {
     return this.getUserId().andThen((userId) => {
-      return this.rm.get('cart').deleteCartItemsByUserId(userId);
+      return this.rm
+        .get("cart")
+        .getCartItemsByUserId(userId)
+        .andThen((items) =>
+          combine(
+            items.map((item) =>
+              this.rm
+                .get("cart")
+                .deleteCartItemByUserIdAndProductId(userId, item.ProductId),
+            ),
+          ),
+        );
     });
   }
 }

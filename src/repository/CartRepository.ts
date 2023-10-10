@@ -84,22 +84,6 @@ class CartRepository {
     );
   }
 
-  deleteCartItemsByUserId(userId: string) {
-    return fromPromise(
-      this.documentClient
-        .delete({
-          TableName: this.cartTableName.get(),
-          Key: {
-            UserId: userId,
-          },
-        })
-        .promise(),
-      (e) => {
-        return new ServerError("Failed to connect to database", e);
-      },
-    );
-  }
-
   deleteCartItemByUserIdAndProductId(userId: string, productId: string) {
     return fromPromise(
       this.documentClient
