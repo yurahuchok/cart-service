@@ -6,10 +6,9 @@ import ProductService from "./service/ProductService";
 import CartService from "./service/CartService";
 import DummyJsonClient from "./client/DummyJsonClient/client";
 import RepositoryManager from "./repository/RepositoryManager";
-import { cartTableName } from "..";
 
 const dummyJsonClient = new DummyJsonClient("https://dummyjson.com");
-const repositoryManager = new RepositoryManager(dummyJsonClient, cartTableName);
+const repositoryManager = new RepositoryManager(dummyJsonClient);
 const loginService = new LoginService(dummyJsonClient);
 
 export default Container.of()

@@ -43,8 +43,6 @@ const cartTable = new aws.dynamodb.Table("cart-items", {
   writeCapacity: 20,
 });
 
-export const cartTableName = cartTable.name;
-
 const auth: apigateway.types.input.AuthorizerArgs = {
   authType: "custom",
   parameterName: "Authorization",
@@ -53,7 +51,7 @@ const auth: apigateway.types.input.AuthorizerArgs = {
   handler: authorizer,
 };
 
-const restApi = new apigateway.RestAPI("api-gateway", {
+const api = new apigateway.RestAPI("cart-service-api-gateway", {
   routes: [
     {
       path: "/login",
@@ -97,3 +95,6 @@ const restApi = new apigateway.RestAPI("api-gateway", {
     },
   ],
 });
+
+export const cartTableName = cartTable.name;
+export const apiUrl = api.url;

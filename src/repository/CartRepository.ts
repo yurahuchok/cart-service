@@ -1,7 +1,7 @@
 import { type ResultAsync, fromPromise, ok } from "neverthrow";
 import * as sdk from "aws-sdk";
 import ServerError from "../error/ServerError";
-import { Output } from "@pulumi/pulumi";
+import { cartTableName } from "../..";
 
 export interface CartItem {
   UserId: string;
@@ -12,7 +12,7 @@ export interface CartItem {
 class CartRepository {
   protected documentClient = new sdk.DynamoDB.DocumentClient();
 
-  constructor(protected cartTableName: Output<string>) {};
+  protected cartTableName = cartTableName;
 
   getCartItemByUserIdAndProductId(
     userId: string,
