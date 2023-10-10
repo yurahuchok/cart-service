@@ -1,14 +1,15 @@
 import ProductRepository from "../repository/ProductRepository";
+import RepositoryManager from "../repository/RepositoryManager";
 
 class ProductService {
-  constructor(protected productRepository: ProductRepository) {}
+  constructor(protected rm: RepositoryManager) {}
 
   getProducts() {
-    return this.productRepository.getProducts();
+    return this.rm.get('product').getProducts();
   }
 
   getProductById(productId: string) {
-    return this.productRepository.getProductById(productId);
+    return this.rm.get('product').getProductById(productId);
   }
 }
 

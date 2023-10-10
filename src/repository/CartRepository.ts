@@ -1,7 +1,7 @@
 import { type ResultAsync, fromPromise, ok } from "neverthrow";
 import * as sdk from "aws-sdk";
-import { cartTable } from "../../index";
 import ServerError from "../error/ServerError";
+import { Output } from "@pulumi/pulumi";
 
 export interface CartItem {
   UserId: string;
@@ -10,9 +10,9 @@ export interface CartItem {
 }
 
 class CartRepository {
-  protected table = cartTable;
-
   protected documentClient = new sdk.DynamoDB.DocumentClient();
+
+  constructor(protected cartTableName: Output<string>) {};
 
   getCartItemByUserIdAndProductId(
     userId: string,
@@ -21,7 +21,7 @@ class CartRepository {
     return fromPromise(
       this.documentClient
         .get({
-          TableName: this.table.name.get(),
+          TableName: this.cartTableName.get(),
           Key: {
             UserId: userId,
             ProductId: productId,
@@ -40,7 +40,7 @@ class CartRepository {
     return fromPromise(
       this.documentClient
         .query({
-          TableName: this.table.name.get(),
+          TableName: this.cartTableName.get(),
           KeyConditionExpression: "UserId = :userId",
           ExpressionAttributeValues: {
             ":userId": userId,
@@ -63,7 +63,7 @@ class CartRepository {
     return fromPromise(
       this.documentClient
         .update({
-          TableName: this.table.name.get(),
+          TableName: this.cartTableName.get(),
           Key: {
             UserId: userId,
             ProductId: productId,
@@ -88,7 +88,7 @@ class CartRepository {
     return fromPromise(
       this.documentClient
         .delete({
-          TableName: this.table.name.get(),
+          TableName: this.cartTableName.get(),
           Key: {
             UserId: userId,
           },
@@ -104,7 +104,7 @@ class CartRepository {
     return fromPromise(
       this.documentClient
         .delete({
-          TableName: this.table.name.get(),
+          TableName: this.cartTableName.get(),
           Key: {
             UserId: userId,
             ProductId: productId,

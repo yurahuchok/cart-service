@@ -7,7 +7,7 @@ import products from "./src/handler/products";
 import * as cart from "./src/handler/cart";
 import * as aws from "@pulumi/aws";
 
-export const cartTable = new aws.dynamodb.Table("cart", {
+const cartTable = new aws.dynamodb.Table("cart-items", {
   attributes: [
     {
       name: "UserId",
@@ -43,7 +43,9 @@ export const cartTable = new aws.dynamodb.Table("cart", {
   writeCapacity: 20,
 });
 
-export const auth: apigateway.types.input.AuthorizerArgs = {
+export const cartTableName = cartTable.name;
+
+const auth: apigateway.types.input.AuthorizerArgs = {
   authType: "custom",
   parameterName: "Authorization",
   type: "request",
@@ -51,7 +53,7 @@ export const auth: apigateway.types.input.AuthorizerArgs = {
   handler: authorizer,
 };
 
-export const restApi = new apigateway.RestAPI("ncc-gateway", {
+const restApi = new apigateway.RestAPI("api-gateway", {
   routes: [
     {
       path: "/login",

@@ -5,19 +5,16 @@ import LoginService from "./service/LoginService";
 import ProductService from "./service/ProductService";
 import CartService from "./service/CartService";
 import DummyJsonClient from "./client/DummyJsonClient/client";
-import ProductRepository from "./repository/ProductRepository";
-import CartRepository from "./repository/CartRepository";
+import RepositoryManager from "./repository/RepositoryManager";
+import { cartTableName } from "..";
 
 const dummyJsonClient = new DummyJsonClient("https://dummyjson.com");
+const repositoryManager = new RepositoryManager(dummyJsonClient, cartTableName);
 const loginService = new LoginService(dummyJsonClient);
-
-// TODO. Possibly some kind of repository manager instead.
-const productRepository = new ProductRepository(dummyJsonClient);
-const cartRepository = new CartRepository();
 
 export default Container.of()
   .set(InputService, new InputService())
   .set(OutputService, new OutputService())
   .set(LoginService, loginService)
-  .set(ProductService, new ProductService(productRepository))
-  .set(CartService, new CartService(cartRepository, productRepository, loginService));
+  .set(ProductService, new ProductService(repositoryManager))
+  .set(CartService, new CartService(repositoryManager, loginService));
