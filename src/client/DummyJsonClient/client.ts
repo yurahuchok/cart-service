@@ -23,7 +23,6 @@ import {
   isClientUser,
 } from "./guards";
 import NotFoundError from "../../error/NotFoundError";
-import ServerError from "../../error/ServerError";
 
 class DummyJsonClient {
   constructor(protected baseUrl: string) {}
@@ -80,7 +79,9 @@ class DummyJsonClient {
         if (response.status === 404) {
           return errAsync(new NotFoundError("Product not found."));
         } else if (response.status !== 200) {
-          return errAsync(new ClientError("Unexpected client response status."));
+          return errAsync(
+            new ClientError("Unexpected client response status."),
+          );
         }
 
         return fromPromise(
