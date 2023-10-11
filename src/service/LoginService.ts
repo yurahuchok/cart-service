@@ -35,7 +35,13 @@ class LoginService {
   authenticateWithEvent(
     event: APIGatewayProxyWithLambdaAuthorizerEvent<LoginUser>,
   ) {
-    return ok(this.setAuthenticated(event.requestContext.authorizer));
+    return ok(
+      this.setAuthenticated({
+        id: event.requestContext.authorizer.id,
+        username: event.requestContext.authorizer.username,
+        email: event.requestContext.authorizer.email,
+      }),
+    );
   }
 
   authenticateWithToken(token: string) {
