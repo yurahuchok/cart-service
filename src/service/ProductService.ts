@@ -4,7 +4,9 @@ class ProductService {
   constructor(protected rm: RepositoryManager) {}
 
   getProducts() {
-    return this.rm.get("product").getProducts();
+    return this.rm.get("product").getProducts({
+      sortBy: "title",
+    });
   }
 
   getProductById(productId: string) {
